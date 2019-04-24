@@ -6,9 +6,13 @@
 	<article class='clock-settings'>
 		<div class="clock-settings_break">
 			<div class="clock-settings_break-title">Break time</div>
-			<div class="clock-settings_break-value">
-				5
-			</div>
+			<div class="clock-settings_break-manage">
+				<div class="clock-settings_break-sub" @click='subBreak'>-</div>	
+				<div class="clock-settings_break-value">
+					{{breakLength}}
+				</div>
+				<div class="clock-settings_break-add" @click='addBreak'>+</div>
+			</div>	
 		</div>
 		<div class="clock-settings_session">
 			<div class="clock-settings_session-title">Session length</div>
@@ -36,7 +40,7 @@
 		<div class="clock-toolbar_item" @click='restartClock'>Restart</div>
 	</article>
 	<footer class="clock-footer">
-		Developed by <a href="https://yugako.github.io">Yurko</a>
+		Designed and coded by <a class="clock-footer_link" href="https://yugako.github.io">Yurko</a>
 	</footer>
   </section>
 </template>
@@ -45,54 +49,73 @@
 export default {
   	name: 'home',
   	created() {
-  		this.time = this.sessionLength * 60;
+  		this.session_time = this.sessionLength * 60;
+  		this.break_time = this.breakLength * 60;
   	},
   	data() {
   		return {
-  			time: null,
-  			timer: null,
-  			sessionLength: 25,
-  			started: false,
+  			session_time: null,
+  			break_time: null,
+  			session_timer: null,
+  			break_timer: null,
+  			sessionLength: 1,
+  			breakLength: 5,
+  			startedSession: false,
+  			startedBreak: false,
   		}
   	},
   	methods: {
   		startClock() {
-  			this.started = true;
-  			this.timer = setInterval(() => {
-  				this.time--;
+  			this.startedSession = true;
+  			this.session_timer = setInterval(() => {
+  				this.session_time--;
   			}, 1000)
   		},
   		stopClock() {
-  			this.started = false;
-  			clearInterval(this.timer);
+  			this.startedSession = false;
+  			clearInterval(this.session_timer);
   		},
   		restartClock() {
-  			this.started = false;
+  			this.startedSession = false;
 
-  			this.time = this.sessionLength * 60;
+  			this.session_time = this.sessionLength * 60;
   			this.stopClock();
   		},
   		subMinutes() {
-  			if (!this.started) {
+  			if (!this.startedSession && !this.checkValue(this.sessionLength)) {
   				this.sessionLength-=1;
-  				this.time = this.sessionLength * 60;
+  				this.session_time = this.sessionLength * 60;
   			}
   			
   		},
   		addMinutes() {
-  			if (!this.started) {
+  			if (!this.startedSession) {
   				this.sessionLength+=1;
-  				this.time = this.sessionLength * 60;
+  				this.session_time = this.sessionLength * 60;
   			}
   			
+  		},
+  		subBreak () {
+  			if (!this.checkValue(this.breakLength)) {
+	  			this.breakLength-=1;
+	  			this.break_time = this.breakLength * 60;
+	  		}
+  		},
+  		addBreak() {
+			this.breakLength+=1;
+			this.break_time = this.breakLength * 60;
+  		},
+  		checkValue(value) {
+  			return value == 1;
   		}
   	},
   	computed: {
   		getMinutes() {
-  			return ~~(this.time / 60);
+  			let result = ~~(this.session_time / 60);
+  			return result < 10 ? '0' + result : result;
   		},
   		getSeconds() {
-  			let result = (this.time % 60).toFixed(0);
+  			let result = (this.session_time % 60).toFixed(0);
   			return result < 10 ? '0' + result : result;
   		}
   	}
@@ -113,6 +136,17 @@ export default {
 				font-size: 26px;
 			}
 			&_session {
+				&-manage {
+					display: flex;
+					justify-content: space-around;
+					align-items: center;
+				}
+				&-add, &-sub {
+					margin: 5px;
+					cursor: pointer;
+				}
+			}
+			&_break {
 				&-manage {
 					display: flex;
 					justify-content: space-around;
@@ -144,6 +178,11 @@ export default {
 			&_tick {
 				font-family: 'Share Tech Mono', monospace;
 				font-size: 80px;
+			}
+		}
+		&-footer {
+			&_link {
+				color: darken(#fff, 15%);
 			}
 		}
 	}
