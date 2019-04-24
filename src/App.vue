@@ -1,29 +1,41 @@
 <template>
   <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </div>
-    <router-view/>
+    <Clock />
   </div>
 </template>
-
+<script>
+  import Clock from './views/Clock'
+  export default {
+    name: 'AppRoot',
+    components: {
+      Clock
+    }
+  }
+</script>
 <style lang="scss">
+body {
+   background-image: url('http://njitvector.com/wp-content/uploads/2014/05/time_flies.jpg');
+   background-size: cover;
+   background-attachment: fixed;
+   background-position: 40% 50%;
+   &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0, 0.6);
+    z-index: -1;
+   }
+}
 #app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
-  color: #2c3e50;
+  color: #fff;
+  
 }
-#nav {
-  padding: 30px;
-  a {
-    font-weight: bold;
-    color: #2c3e50;
-    &.router-link-exact-active {
-      color: #42b983;
-    }
-  }
-}
+
 </style>
