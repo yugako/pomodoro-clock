@@ -18,6 +18,7 @@ body {
    background-size: cover;
    background-attachment: fixed;
    background-position: 40% 50%;
+   font-family: 'Righteous', cursive;
    &::before {
     content: '';
     position: absolute;
@@ -25,12 +26,11 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0,0,0, 0.6);
+    background-color: rgba(0,0,0, 0.7);
     z-index: -1;
    }
 }
 #app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
