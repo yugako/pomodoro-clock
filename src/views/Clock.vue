@@ -12,9 +12,14 @@
 		</div>
 		<div class="clock-settings_session">
 			<div class="clock-settings_session-title">Session length</div>
-			<div class="clock-settings_session-value">
-				25
-			</div>	
+			<div class="clock-settings_session-manage">
+				<div class="clock-settings_session-sub" @click='subMinutes'>-</div>	
+				<div class="clock-settings_session-value">
+					{{sessionLength}}
+				</div>
+				<div class="clock-settings_session-add" @click='addMinutes'>+</div>		
+			</div>
+			
 		</div>
 	</article>
 	<article class="clock-time">
@@ -39,34 +44,55 @@
 <script>
 export default {
   	name: 'home',
+  	created() {
+  		this.time = this.sessionLength * 60;
+  	},
   	data() {
   		return {
-  			base_time: 1500,
-  			minutes: null,
-  			seconds: null,
+  			time: null,
   			timer: null,
+  			sessionLength: 25,
+  			started: false,
   		}
   	},
   	methods: {
   		startClock() {
+  			this.started = true;
   			this.timer = setInterval(() => {
-  				this.base_time--;
+  				this.time--;
   			}, 1000)
   		},
   		stopClock() {
+  			this.started = false;
   			clearInterval(this.timer);
   		},
   		restartClock() {
-  			this.base_time = 1500;
+  			this.started = false;
+
+  			this.time = this.sessionLength * 60;
   			this.stopClock();
+  		},
+  		subMinutes() {
+  			if (!this.started) {
+  				this.sessionLength-=1;
+  				this.time = this.sessionLength * 60;
+  			}
+  			
+  		},
+  		addMinutes() {
+  			if (!this.started) {
+  				this.sessionLength+=1;
+  				this.time = this.sessionLength * 60;
+  			}
+  			
   		}
   	},
   	computed: {
   		getMinutes() {
-  			return ~~(this.base_time / 60);
+  			return ~~(this.time / 60);
   		},
   		getSeconds() {
-  			let result = (this.base_time % 60).toFixed(0);
+  			let result = (this.time % 60).toFixed(0);
   			return result < 10 ? '0' + result : result;
   		}
   	}
@@ -85,6 +111,17 @@ export default {
 			margin-bottom: 15px;
 			&_break, &_session {
 				font-size: 26px;
+			}
+			&_session {
+				&-manage {
+					display: flex;
+					justify-content: space-around;
+					align-items: center;
+				}
+				&-add, &-sub {
+					margin: 5px;
+					cursor: pointer;
+				}
 			}
 		}
 		&-toolbar {
