@@ -1,6 +1,7 @@
 export default {
   	state: {
   		session_time: null,
+      session_status: false,
   		sessionLength: 1,
   	},
   	mutations: {
@@ -18,8 +19,18 @@ export default {
   			state.session_time = state.sessionLength * 60;
   		},
   		reduceTime(state) {
-  			state.session_time--;
-  		}
+        if (state.session_time > 0) {
+          state.session_time--;
+        } else {
+          state.session_status = false;
+        }
+  		},
+      sessionUp(state) {
+        state.session_status = true;
+      },
+      sessionDown(state) {
+        state.session_status = false;
+      }
   	},
   	getters: {
   		SessionLength: state => {
@@ -27,6 +38,9 @@ export default {
   		},
   		SessionTime: state => {
   			return state.session_time;
-  		}
+  		},
+      SessionStatus: state => {
+        return state.session_status;
+      }
   	}
 }

@@ -18,27 +18,47 @@
 	  	},
 	  	methods: {
 	  		startClock() {
-	  			if (this.session_time == 0) {
+	  			if (this.SessionTime == 0) {
 	  				this.stopClock();
 	  				this.startBreak();
 	  			}
-
-	  			this.startedSession = true;
-	  			this.session_timer = setInterval(() => {
-	  				this.$store.commit('reduceTime');
-	  			}, 1000);
-
+	  			
+	  			if (!this.SessionStatus) {
+	  				this.$store.commit('sessionUp');
+	  				this.session_timer = setInterval(() => {
+	  					this.$store.commit('reduceTime');
+	  				}, 1000);
+	  			}
+	  		},
+	  		startBreak() {
+	  			if (!this.BreakStatus) {
+	  				this.$store.commit('breakUp');
+	  				this.break_timer = setInterval(() => {
+	  					this.$store.commit('reduceBreak');
+	  				}, 1000);
+	  			}
 	  		},
 	  		stopClock() {
-	  			this.startedSession = false;
+	  			this.$store.commit('sessionDown');
 	  			clearInterval(this.session_timer);
 	  		},
 	  		restartClock() {
-	  			this.startedSession = false;
+	  			this.$store.commit('sessionDown');
 
 	  			this.$store.commit('setInitialTime');
 	  			this.stopClock();
 	  		},
 	  	},
+	  	computed: {
+	  		SessionTime() {
+	  			return this.$store.getters.SessionTime;
+	  		},
+	  		SessionStatus() {
+	  			return this.$store.getters.SessionStatus;
+	  		},
+	  		BreakStatus() {
+	  			return this.$store.getters.BreakStatus;
+	  		}
+	  	}
 	}
 </script>

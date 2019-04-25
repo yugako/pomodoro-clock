@@ -19,15 +19,23 @@
 		},
 		methods: {
 			subMinutes() {
-				this.$store.commit('subMinutes')
+				if (!this.SessionStatus) {
+					this.$store.commit('subMinutes')
+				}
+				
 			},
 			addMinutes() {
-				this.$store.commit('addMinutes')
+				if (!this.SessionStatus) {
+					this.$store.commit('addMinutes')
+				}	
 			}
 		},
 		computed: {
 			SessionLength() {
 				return this.$store.getters.SessionLength;
+			},
+			SessionStatus() {
+				return this.$store.getters.SessionStatus;
 			}
 		}
 	}
