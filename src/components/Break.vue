@@ -4,7 +4,7 @@
 		<div class="clock-settings_break-manage">
 			<div class="clock-settings_break-sub" @click='subBreak'>-</div>	
 			<div class="clock-settings_break-value">
-				{{breakLength}}
+				{{BreakLength}}
 			</div>
 			<div class="clock-settings_break-add" @click='addBreak'>+</div>
 		</div>	
@@ -13,6 +13,21 @@
 <script>
 	export default {
 		name: 'break',
-		props: ['subBreak', 'breakLength', 'addBreak']
+		created() {
+			this.$store.commit('setInitialBreak')
+		},
+		methods: {
+			subBreak() {
+				this.$store.commit('subBreak')
+			},
+			addBreak() {
+				this.$store.commit('addBreak')
+			}
+		},
+		computed: {
+			BreakLength() {
+	  			return this.$store.getters.BreakLength;
+	  		},
+		}
 	}
 </script>

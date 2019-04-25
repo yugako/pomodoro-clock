@@ -5,6 +5,6 @@
 </template>
 <script>
 	export default {
-		name: 'title'
+		name: 'appTitle'
 	}
 </script>

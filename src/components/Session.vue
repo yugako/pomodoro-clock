@@ -4,7 +4,7 @@
 		<div class="clock-settings_session-manage">
 			<div class="clock-settings_session-sub" @click='subMinutes'>-</div>	
 			<div class="clock-settings_session-value">
-				{{sessionLength}}
+				{{SessionLength}}
 			</div>
 			<div class="clock-settings_session-add" @click='addMinutes'>+</div>		
 		</div>
@@ -14,6 +14,21 @@
 <script>
 	export default {
 		name: 'session',
-		props: ['subMinutes', 'sessionLength', 'addMinutes']
+		created() {
+			this.$store.commit('setInitialTime')
+		},
+		methods: {
+			subMinutes() {
+				this.$store.commit('subMinutes')
+			},
+			addMinutes() {
+				this.$store.commit('addMinutes')
+			}
+		},
+		computed: {
+			SessionLength() {
+				return this.$store.getters.SessionLength;
+			}
+		}
 	}
 </script>
