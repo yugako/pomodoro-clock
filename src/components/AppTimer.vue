@@ -1,9 +1,9 @@
 <template>
 	<article class="clock-time">
 		<div class="clock-time_title">
-			Session
+			{{Title}}
 		</div>
-		<div class="clock-time_tick">
+		<div v-if='SessionTime' class="clock-time_tick">
 			{{getMinutes}}:{{getSeconds}}
 		</div>
 	</article>
@@ -22,6 +22,9 @@
 			},
 			SessionTime() {
 				return this.$store.getters.SessionTime;
+			},
+			Title() {
+				return this.$store.getters.Title;
 			}
 		}
 	}

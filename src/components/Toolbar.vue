@@ -12,29 +12,14 @@
 	  		return {
 	  			session_timer: null,
 	  			break_timer: null,
-	  			startedSession: false,
-	  			startedBreak: false,
 	  		}
 	  	},
 	  	methods: {
 	  		startClock() {
-	  			if (this.SessionTime == 0) {
-	  				this.stopClock();
-	  				this.startBreak();
-	  			}
-	  			
 	  			if (!this.SessionStatus) {
 	  				this.$store.commit('sessionUp');
 	  				this.session_timer = setInterval(() => {
 	  					this.$store.commit('reduceTime');
-	  				}, 1000);
-	  			}
-	  		},
-	  		startBreak() {
-	  			if (!this.BreakStatus) {
-	  				this.$store.commit('breakUp');
-	  				this.break_timer = setInterval(() => {
-	  					this.$store.commit('reduceBreak');
 	  				}, 1000);
 	  			}
 	  		},
@@ -50,15 +35,9 @@
 	  		},
 	  	},
 	  	computed: {
-	  		SessionTime() {
-	  			return this.$store.getters.SessionTime;
-	  		},
 	  		SessionStatus() {
 	  			return this.$store.getters.SessionStatus;
 	  		},
-	  		BreakStatus() {
-	  			return this.$store.getters.BreakStatus;
-	  		}
 	  	}
 	}
 </script>
