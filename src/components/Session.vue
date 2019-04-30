@@ -14,9 +14,6 @@
 <script>
 	export default {
 		name: 'session',
-		created() {
-			this.$store.commit('setInitialTime')
-		},
 		methods: {
 			subMinutes() {
 				if (!this.SessionStatus) {
